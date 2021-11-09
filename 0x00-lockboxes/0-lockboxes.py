@@ -4,17 +4,15 @@
 
 def canUnlockAll(boxes) -> bool:
     """ canUnlockAll - checks if all boxes are unlocked """
-    ix = 0
+    # keys = unique box values from current ix
+    # starts at 0 + all vals in boxes[0] b/c first box is unlocked
     keys = list(set(boxes[0]) | {0})
-    check = True
-    while check:
-        check = False
-        res = []
-        for k in keys[ix:]:
-            res += boxes[k]
-        for k in res:
-            if k not in keys:
-                keys.append(k)
-                ix += 1
-                check = True
-    return len(keys) == len(boxes)
+    # if index of boxes in keys, box is unlocked
+    for i in range(len(boxes)):
+        if i not in keys:
+            return False
+        for k in keys[i:]:
+            for b in boxes[k]:
+                if b not in keys:
+                    keys.append(b)
+    return True
