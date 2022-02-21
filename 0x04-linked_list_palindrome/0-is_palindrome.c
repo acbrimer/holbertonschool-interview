@@ -40,7 +40,7 @@ int is_palindrome(listint_t **head)
 		mid = mid->next;
 	/** handle empty/one item linked list */
 	if (n <= 1)
-		return (n);
+		return (1);
 	/** increment i/mid to halfway point */
 	mid = (*head);
 	for (i = 0; i < n / 2 - 1; i++)
