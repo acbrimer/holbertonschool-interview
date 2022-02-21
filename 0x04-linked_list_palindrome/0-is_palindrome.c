@@ -38,6 +38,9 @@ int is_palindrome(listint_t **head)
 	/** get size of linked list */
 	for (n = 0; mid != NULL; n++)
 		mid = mid->next;
+	/** handle empty/one item linked list */
+	if (n <= 1)
+		return (n);
 	/** increment i/mid to halfway point */
 	mid = (*head);
 	for (i = 0; i < n / 2 - 1; i++)
