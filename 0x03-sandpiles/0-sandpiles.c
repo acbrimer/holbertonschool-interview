@@ -45,7 +45,7 @@ void stabalize_pile(int grid1[3][3], int i, int j)
 /**
  * should_topple - checks for stable grid and marks unstable cells
  * @grid: the grid to check
- * @topple_flags: matrix of boolean flags
+ * @topple_flags: 3x3 matrix of boolean flags
  *
  * Return: true if unstable, else false
  */
