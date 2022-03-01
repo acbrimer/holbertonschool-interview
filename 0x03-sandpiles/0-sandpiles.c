@@ -8,61 +8,64 @@
  */
 static void print_grid(int grid[3][3])
 {
-    int i, j;
+	int i, j;
 
-    for (i = 0; i < 3; i++)
-    {
-        for (j = 0; j < 3; j++)
-        {
-            if (j)
-                printf(" ");
-            printf("%d", grid[i][j]);
-        }
-        printf("\n");
-    }
+	for (i = 0; i < 3; i++)
+	{
+		for (j = 0; j < 3; j++)
+		{
+			if (j)
+				printf(" ");
+			printf("%d", grid[i][j]);
+		}
+		printf("\n");
+	}
 }
 
 /**
  * stabalize_pile - distributes sand until no cell has more than 3 grains
  * @grid1: input 3x3 sandpile to stabalize
+ * @i: row coord of cell to topple
+ * @j: column coord of cell to topple
  */
-void stabalize_pile(int grid1[3][3])
+void stabalize_pile(int grid1[3][3], int i, int j)
 {
-    int i, ii;
-    bool topple = false;
-    int sandpile[3][3] = {{0, 0, 0}, {0, 0, 0}, {0, 0, 0}};
+	grid1[i][j] -= 4;
 
-    for (i = 0; i < 3; i++)
-        for (ii = 0; ii < 3; ii++)
-        {
-            if (grid1[i][ii] < 4)
-                sandpile[i][ii] += sandpile[i][ii];
-            else if (grid1[i][ii] >= 4)
-            {
-                sandpile[i][ii] += grid1[i][ii] - 4;
-                if (i > 0)
-                    sandpile[i - 1][ii] += 1;
-                if (ii > 0)
-                    sandpile[i][ii - 1] += 1;
-                if (i < 2)
-                    sandpile[i + 1][ii] += 1;
-                if (ii < 2)
-                    sandpile[i][ii + 1] += 1;
-            }
-        }
-    for (i = 0; i < 3; i++)
-        for (ii = 0; ii < 3; ii++)
-        {
-            if (sandpile[i][ii] > 3)
-                topple = true;
-            grid1[i][ii] = sandpile[i][ii];
-        }
-    if (topple)
-    {
-        printf("=\n");
-        print_grid(grid1);
-        stabalize_pile(grid1);
-    }
+	if (i - 1 >= 0)
+		grid1[i - 1][j]++;
+	if (i + 1 < 3)
+		grid1[i + 1][j]++;
+	if (j - 1 >= 0)
+		grid1[i][j - 1]++;
+	if (j + 1 < 3)
+		grid1[i][j + 1]++;
+}
+
+/**
+ * should_topple - checks for stable grid and marks unstable cells
+ * @grid: the grid to check
+ * @flags: matrix of boolean flags
+ *
+ * Return: true if unstable, else false
+ */
+bool should_topple(int grid[3][3], bool topple_flags[3][3])
+{
+	bool topple = false;
+	int i, j;
+
+	for (i = 0; i < 3; i++)
+		for (j = 0; j < 3; j++)
+		{
+			if (grid[i][j] > 3)
+			{
+				topple = true;
+				topple_flags[i][j] = true;
+			}
+			else
+				topple_flags[i][j] = false;
+		}
+	return (topple);
 }
 
 /**
@@ -72,20 +75,24 @@ void stabalize_pile(int grid1[3][3])
  */
 void sandpiles_sum(int grid1[3][3], int grid2[3][3])
 {
-    int i, j;
-    bool topple = false;
+	int i, j;
+	bool topple_flags[3][3] = {
+		{false, false, false},
+		{false, false, false},
+		{false, false, false}
+	};
 
-    for (i = 0; i < 3; i++)
-        for (j = 0; j < 3; j++)
-        {
-            grid1[i][j] = grid1[i][j] + grid2[i][j];
-            if (grid1[i][j] > 3)
-                topple = true;
-        }
-    if (topple)
-    {
-        printf("=\n");
-        print_grid(grid1);
-        stabalize_pile(grid1);
-    }
+	for (i = 0; i < 3; i++)
+		for (j = 0; j < 3; j++)
+			grid1[i][j] = grid1[i][j] + grid2[i][j];
+	while (should_topple(grid1, topple_flags))
+	{
+		printf("=\n");
+		print_grid(grid1);
+
+		for (i = 0; i < 3; i++)
+			for (j = 0; j < 3; j++)
+				if (topple_flags[i][j])
+					stabalize_pile(grid1, i, j);
+	}
 }
