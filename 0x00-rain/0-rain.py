@@ -2,7 +2,7 @@
 """ 0-rain """
 
 
-def getArea(startIx: int, walls: list[int]):
+def getArea(startIx, walls):
     """ Computes the area between a starting index and the next wall if exists """
     endIx = startIx + 1
     while walls[endIx] == 0:
@@ -15,7 +15,7 @@ def getArea(startIx: int, walls: list[int]):
     return min([walls[endIx], walls[startIx]]) * width
 
 
-def rain(walls: list[int]) -> int:
+def rain(walls):
     """ Gets area of rain between n walls of varrying heights """
     area = 0
     for ix, h in enumerate(walls):
