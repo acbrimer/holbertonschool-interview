@@ -17,6 +17,8 @@ def getArea(startIx, walls):
 
 def rain(walls):
     """ Gets area of rain between n walls of varrying heights """
+    if len([v for v in walls if not isinstance(v, int)]) > 0:
+        return 0
     area = 0
     for ix, h in enumerate(walls):
         # get the next wall if current position is a wall
