@@ -3,7 +3,7 @@
 
 
 def getArea(startIx, walls):
-    """ Computes the area between a starting index and the next wall if exists """
+    """ Computes the area from start ix and the next wall if exists """
     endIx = startIx + 1
     while walls[endIx] == 0:
         # end of walls
