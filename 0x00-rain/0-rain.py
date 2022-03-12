@@ -4,6 +4,8 @@
 
 def rain(walls):
     """ Gets area of rain between n walls of varrying heights """
+    if len([h for h in walls if h > 0]) == 0:
+        return 0
     lastWall = max([i for i, x in enumerate(walls) if x > 0])
     firstWall = min([i for i, x in enumerate(walls) if x > 0])
     w = walls[:lastWall+1]
@@ -13,8 +15,6 @@ def rain(walls):
     grid = list(grid)
 
     def hasL(y, x):
-        """ check if current cell is contained on the left
-        """
         if x <= firstWall:
             return False
         prevX = x - 1
@@ -25,8 +25,6 @@ def rain(walls):
         return grid[y][0]
 
     def hasR(y, x):
-        """ check if the current cell is contained on the right 
-        """
         nextX = x + 1
         while nextX < len(w):
             if grid[y][nextX]:
