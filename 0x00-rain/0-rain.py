@@ -2,30 +2,41 @@
 """ 0-rain """
 
 
-def getArea(startIx, walls):
-    """ Computes the area from start ix and the next wall if exists """
-    endIx = startIx + 1
-    while walls[endIx] == 0:
-        # end of walls
-        if endIx == len(walls) - 1:
-            return -1
-        endIx += 1
-    # return next height and width
-    width = endIx - startIx - 1
-    return min([walls[endIx], walls[startIx]]) * width
-
-
 def rain(walls):
     """ Gets area of rain between n walls of varrying heights """
-    if len([v for v in walls if not isinstance(v, int)]) > 0:
-        return 0
+    lastWall = max([i for i, x in enumerate(walls) if x > 0])
+    firstWall = min([i for i, x in enumerate(walls) if x > 0])
+    w = walls[:lastWall+1]
+    maxH = max(walls)
+    grid = [[True if w[x] > 0 and y < w[x]
+             else False for x in range(len(w))] for y in range(maxH)]
+    grid = list(grid)
+
+    def hasL(y, x):
+        """ check if current cell is contained on the left
+        """
+        if x <= firstWall:
+            return False
+        prevX = x - 1
+        while prevX > 0:
+            if grid[y][prevX]:
+                return True
+            prevX -= 1
+        return grid[y][0]
+
+    def hasR(y, x):
+        """ check if the current cell is contained on the right 
+        """
+        nextX = x + 1
+        while nextX < len(w):
+            if grid[y][nextX]:
+                return True
+            nextX += 1
+        return grid[y][lastWall]
+
     area = 0
-    for ix, h in enumerate(walls):
-        # get the next wall if current position is a wall
-        if h != 0 and ix < len(walls) - 1:
-            a = getArea(ix, walls)
-            # if getArea returns -1, no more walls
-            if a == -1:
-                return area
-            area += a
+    for y, r in enumerate(grid):
+        for x, c in enumerate(r):
+            if not c and hasL(y, x) and hasR(y, x):
+                area += 1
     return area
