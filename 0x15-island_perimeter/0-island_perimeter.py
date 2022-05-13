@@ -1,4 +1,4 @@
-
+#!/usr/bin/python3
 
 def island_perimeter(grid):
 
@@ -19,7 +19,7 @@ def island_perimeter(grid):
         return p
 
     perimeter = 0
-    # Loop over coords in grid to get 
+    # Loop over coords in grid to get
     for y in range(len(grid)):
         for x in range(len(grid[y])):
             if grid[y][x] == 0:
