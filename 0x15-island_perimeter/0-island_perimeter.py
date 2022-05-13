@@ -1,8 +1,11 @@
 #!/usr/bin/python3
+"""0-island_perimeter"""
+
 
 def island_perimeter(grid):
-
+    """island_perimeter - gets the paremeter of island cells in grid"""
     def getPerimAtCoord(y, x):
+        """getPerimAtCoord - gets the paremeter of cell at coord"""
         p = 4
         # Check left is island
         if x - 1 >= 0 and grid[y][x - 1] == 1:
