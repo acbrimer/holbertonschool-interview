@@ -39,8 +39,8 @@ def isWinner(x, nums):
         return None
 
     for n in range(x):
-        primes = getPrimes(n)
-        if (len(primes) % 2 == 0):
+        s = sum(getPrimes(n))
+        if (s % 2 == 0):
             scores[1] += 1
         else:
             scores[0] += 1
